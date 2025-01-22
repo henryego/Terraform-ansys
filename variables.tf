@@ -13,3 +13,17 @@ variable "state_dynamodb_table" {
   description = "DynamoDB table name for state locking"
   type        = string
 }
+
+variable "vpc_cidr" {
+  description = "CIDR block for the VPC"
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+variable "tags" {
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  default = {
+    Environment = "ansys"
+  }
+}
