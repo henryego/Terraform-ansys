@@ -13,3 +13,12 @@ module "vpc" {
   vpc_cidr = var.vpc_cidr
   tags     = var.tags
 }
+
+module "subnets" {
+  source               = "./modules/subnets"
+  vpc_id               = module.vpc.vpc_id
+  vpc_cidr             = var.vpc_cidr
+  public_subnet_count  = var.public_subnet_count
+  private_subnet_count = var.private_subnet_count
+  tags                 = var.tags
+}
