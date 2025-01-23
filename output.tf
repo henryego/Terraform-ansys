@@ -3,7 +3,7 @@ output "vpc_id" {
   description = "The ID of the VPC"
 }
 
-output "public_subnet_ids" {
-  value       = module.subnets.public_subnet_ids
-  description = "Public Subnet IDs"
+output "ami_id" {
+  value       = data.aws_ami.myami.id
+  description = "The ID of the ami"
 }

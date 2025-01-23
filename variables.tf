@@ -39,3 +39,47 @@ variable "private_subnet_count" {
   type        = number
   default     = 3
 }
+
+variable "ingress_rules" {
+  description = "List of ingress rules for the EC2 instance security group"
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = [{
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }]
+}
+
+variable "egress_rules" {
+  description = "List of egress rules for the EC2 instance security group"
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = [{
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }]
+}
+
+variable "instance_type" {
+  description = "Instance type for the EC2 instance"
+  type        = string
+  default     = "t2.micro"
+}
+
+variable "vpc_name" {
+  description = "The name of the VPC"
+  type        = string
+  default     = "dev-vpc"
+}

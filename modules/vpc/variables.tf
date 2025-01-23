@@ -8,3 +8,8 @@ variable "tags" {
   type        = map(string)
 }
 
+variable "vpc_name" {
+  description = "The name of the VPC"
+  type        = string
+  default = "dev-vpc"
+}

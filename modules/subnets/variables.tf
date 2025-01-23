@@ -22,3 +22,14 @@ variable "tags" {
   description = "Tags to apply to the subnets"
   type        = map(string)
 }
+
+
+variable "igw_id" {
+  description = "Internet Gateway ID"
+  type        = string
+}
+
+variable "vpc_name" {
+  description = "The name of the VPC"
+  type        = string
+}

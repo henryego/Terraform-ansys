@@ -22,3 +22,65 @@ resource "aws_subnet" "private" {
     { Name = "private-subnet-${count.index + 1}" }
   )
 }
+
+resource "aws_route_table" "public" {
+  vpc_id = var.vpc_id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name = "${var.vpc_name}-Public-RT"
+  }
+}
+
+resource "aws_route_table_association" "public" {
+  for_each = { for id, subnet in aws_subnet.public : id => subnet }
+  subnet_id     = each.value.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table" "private" {
+  vpc_id = var.vpc_id
+
+    route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.nat.id
+  }
+
+  tags = {
+    Name = "${var.vpc_name}-Private-RT"
+  }
+}
+
+resource "aws_route_table_association" "private" {
+  for_each = { for id, subnet in aws_subnet.private : id => subnet }
+  subnet_id     = each.value.id
+  route_table_id = aws_route_table.private.id
+}
+
+
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = var.vpc_id
+
+  tags = {
+    Name = "${var.vpc_name}-IGW"
+  }
+}
+
+resource "aws_eip" "nat" {
+  vpc = true
+}
+
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.id
+  subnet_id = aws_subnet.public[0].id
+
+  tags = {
+    Name = "${var.vpc_name}-NAT"
+  }
+}
