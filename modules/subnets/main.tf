@@ -45,11 +45,6 @@ resource "aws_route_table_association" "public" {
 resource "aws_route_table" "private" {
   vpc_id = var.vpc_id
 
-    route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat.id
-  }
-
   tags = {
     Name = "${var.vpc_name}-Private-RT"
   }
@@ -68,19 +63,5 @@ resource "aws_internet_gateway" "igw" {
 
   tags = {
     Name = "${var.vpc_name}-IGW"
-  }
-}
-
-resource "aws_eip" "nat" {
-  vpc = true
-}
-
-
-resource "aws_nat_gateway" "nat" {
-  allocation_id = aws_eip.nat.id
-  subnet_id = aws_subnet.public[0].id
-
-  tags = {
-    Name = "${var.vpc_name}-NAT"
   }
 }
